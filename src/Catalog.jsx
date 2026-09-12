@@ -655,7 +655,6 @@ export default function Catalog() {
     <div className="cat-root">
       <header className="cat-header">
         <AllRentalLogo className="catalog-logo" alt="ALL렌탈" />
-        <div className="sub">PREMIUM RENTAL</div>
       </header>
 
       <div className="cat-toolbar">
