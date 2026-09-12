@@ -376,6 +376,7 @@
 
 /* 중앙 로고: 5초 동안 펄스 + 회전 */
 .splash-logo { position: relative; z-index: 2; filter: drop-shadow(0 0 14px rgba(245,158,11,.55)); animation: logoPulse 5s ease-in-out infinite; transform-origin: center; }
+.splash-logo .allRentalMark { width: 102px; height: auto; }
 @keyframes logoPulse {
   0%   { transform: scale(.82) rotate(-8deg); opacity: .75; }
   25%  { transform: scale(1.06) rotate(4deg); opacity: 1; }
@@ -393,15 +394,9 @@
 }
 @keyframes shineSweep { 0%,100% { transform: translate(-40%,0) rotate(8deg); } 50% { transform: translate(180%,0) rotate(8deg); } }
 
-/* 브랜드 텍스트 */
-.splash-brand {
-  font-size: 26px; font-weight: 900; letter-spacing: 3px;
-  background: linear-gradient(135deg, #fde68a, #f59e0b 55%, #fcd34d);
-  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 24px rgba(245,158,11,.25);
-  animation: brandGlow 5s ease-in-out infinite;
-}
-@keyframes brandGlow { 0%,100% { filter: brightness(.95); } 50% { filter: brightness(1.25); } }
+.allRentalBrand { display: inline-flex; align-items: center; line-height: 0; }
+.allRentalMark { display: block; width: min(72vw, 320px); height: auto; object-fit: contain; }
+.catalog-logo .allRentalMark { width: 192px; }
 
 /* 로딩 진행 바 */
 .splash-bar { width: 180px; height: 3px; border-radius: 999px; background: rgba(255,255,255,.12); overflow: hidden; }
@@ -621,7 +616,7 @@
 
   /* 상단 헤더/툴바 모바일 최적화 */
   .cat-header { padding: 12px 14px 10px; }
-  .cat-header h1 { font-size: 20px; }
+  .catalog-logo .allRentalMark { width: 132px; }
   .cat-header .sub { font-size: 10px; letter-spacing: 2px; }
   .cat-toolbar { padding: 10px 12px; top: 66px; }
 
