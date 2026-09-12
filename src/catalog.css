@@ -29,10 +29,11 @@
   position: sticky;
   top: 0;
   z-index: 40;
-  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 55%, #3b82f6 100%);
-  color: #fff;
+  background: #fff;
+  color: var(--gray-800);
   padding: 14px 16px 12px;
-  box-shadow: 0 4px 18px rgba(29, 78, 216, .25);
+  border-bottom: 1px solid var(--gray-200);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, .06);
 }
 .cat-header h1 {
   margin: 0;
@@ -49,6 +50,7 @@
   letter-spacing: 3px;
   opacity: .85;
   font-weight: 700;
+  color: var(--blue-dark);
 }
 .cat-header .count {
   margin-left: auto;
