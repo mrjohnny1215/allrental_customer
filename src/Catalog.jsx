@@ -641,12 +641,7 @@ export default function Catalog() {
     return (
       <div className="splash">
         <div className="box splash-anim">
-          <div className="splash-stage">
-            <div className="splash-ring splash-ring-1" />
-            <div className="splash-ring splash-ring-2" />
-            <div className="splash-shine" />
-            <AllRentalLogo className="splash-logo" alt="ALL렌탈 로딩 중" />
-          </div>
+          <AllRentalLogo alt="ALL렌탈 로딩 중" />
           <div className="splash-bar"><span /></div>
           <p>렌탈 상담 포털을 준비하는 중...</p>
         </div>
