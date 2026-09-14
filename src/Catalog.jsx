@@ -14,6 +14,8 @@ const CONTRACTS = ['신규', '신규/후결합', '신규/동시구매', '보상'
 const YEARS = ['3년', '4년', '5년', '6년', '7년', '9년']
 const PAGE = 60
 const NO_IMG = '/assets/goods_image/no_image.jpg'
+// 관리자용에 내부 보관 중인 검증된 상품 상세 이미지와 동일한 원본을 사용한다.
+const ADMIN_DETAIL_IMAGE_ORIGIN = 'https://allrentaladmin.vercel.app'
 
 const won = (n) => (n ? n.toLocaleString('ko-KR') : '0')
 
@@ -557,7 +559,12 @@ export default function Catalog() {
   useEffect(() => {
     fetch('/data/products.json', { cache: 'no-store' })
       .then((r) => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json() })
-      .then(setAll)
+      .then((data) => setAll((data || []).map((product) => ({
+        ...product,
+        detail_description_images: (product.detail_description_images || []).map((src) => (
+          String(src).startsWith('/images/details/') ? `${ADMIN_DETAIL_IMAGE_ORIGIN}${src}` : src
+        )),
+      }))))
       .catch((e) => setErr(String(e)))
   }, [])
 

@@ -17,5 +17,8 @@ build/
 Thumbs.db
 core
 
+# 관리자용 사이트의 상세 이미지가 고객용 상세페이지의 단일 원본이다.
+/public/images/details/
+
 # Vercel
 .vercel
