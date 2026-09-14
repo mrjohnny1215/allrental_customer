@@ -16,6 +16,11 @@ const PAGE = 60
 const NO_IMG = '/assets/goods_image/no_image.jpg'
 // 관리자용에 내부 보관 중인 검증된 상품 상세 이미지와 동일한 원본을 사용한다.
 const ADMIN_DETAIL_IMAGE_ORIGIN = 'https://allrentaladmin.vercel.app'
+const adminImage = (src) => (
+  String(src || '').startsWith('/assets/goods_image/') || String(src || '').startsWith('/images/details/')
+    ? `${ADMIN_DETAIL_IMAGE_ORIGIN}${src}`
+    : src
+)
 
 const won = (n) => (n ? n.toLocaleString('ko-KR') : '0')
 
@@ -561,9 +566,9 @@ export default function Catalog() {
       .then((r) => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json() })
       .then((data) => setAll((data || []).map((product) => ({
         ...product,
-        detail_description_images: (product.detail_description_images || []).map((src) => (
-          String(src).startsWith('/images/details/') ? `${ADMIN_DETAIL_IMAGE_ORIGIN}${src}` : src
-        )),
+        thumbnail: adminImage(product.thumbnail),
+        images: (product.images || []).map(adminImage),
+        detail_description_images: (product.detail_description_images || []).map(adminImage),
       }))))
       .catch((e) => setErr(String(e)))
   }, [])
