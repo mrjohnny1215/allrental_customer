@@ -561,6 +561,15 @@ export default function Catalog() {
   const veilRef = useRef(null)
   const modalBodyRef = useRef(null)
 
+  const getProductId = useCallback((p) => String(p?.id || p?.model_code || ''), [])
+  const setProductUrl = useCallback((p, mode = 'push') => {
+    const url = new URL(window.location.href)
+    const productId = getProductId(p)
+    if (productId) url.searchParams.set('product', productId)
+    else url.searchParams.delete('product')
+    window.history[`${mode}State`]({ product: productId || null }, '', url)
+  }, [getProductId])
+
   useEffect(() => {
     fetch('/data/products.json', { cache: 'no-store' })
       .then((r) => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json() })
@@ -618,9 +627,27 @@ export default function Catalog() {
 
   useEffect(() => { setLimit(PAGE) }, [q, cat, brand, brandFilter, funcFilter, typeFilter, methodFilter, priceFilter, areaFilter, airFuncFilter, mattressTypeFilter, sort])
 
-  // 모달 열기: 별도 창
-  const open = useCallback((p) => setSel(p), [])
-  const close = useCallback(() => setSel(null), [])
+  // 주소의 상품 ID와 상세 모달을 동기화해 공유/새로고침/뒤로가기를 지원한다.
+  useEffect(() => {
+    if (!all) return
+    const syncFromUrl = () => {
+      const productId = new URLSearchParams(window.location.search).get('product')
+      setSel(productId ? all.find((p) => getProductId(p) === productId) || null : null)
+    }
+    syncFromUrl()
+    window.addEventListener('popstate', syncFromUrl)
+    return () => window.removeEventListener('popstate', syncFromUrl)
+  }, [all, getProductId])
+
+  // 모달 열기: 별도 창 + 공유 가능한 상품 URL 생성
+  const open = useCallback((p) => {
+    setSel(p)
+    setProductUrl(p)
+  }, [setProductUrl])
+  const close = useCallback(() => {
+    setSel(null)
+    setProductUrl(null, 'replace')
+  }, [setProductUrl])
 
   // ESC 닫기 + 배경 스크롤 잠금
   useEffect(() => {
