@@ -425,7 +425,18 @@ function DetailSection({ p, scrollRef }) {
               )}
             </div>
 
-            <Calculator matrix={matrix} colors={p.colors || []} />
+            <Calculator
+              matrix={matrix}
+              colors={p.colors || []}
+              discount={discount}
+              setDiscount={setDiscount}
+              onPick={({ mgmt, contract, years, color }) => {
+                setSelMgmt(mgmt)
+                setSelContract(contract)
+                setSelYears(years)
+                if (color) setSelColor(color)
+              }}
+            />
 
             {(promo.plan?.product || promo.monthly) && (
               <div className="promo-banner">
