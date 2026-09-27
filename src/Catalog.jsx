@@ -66,6 +66,11 @@ function classifyPriceRange(price = 0) {
   if (p <= 100000) return '4~10만원'
   return '10만원이상'
 }
+function representativeFee(matrix = []) {
+  if (!matrix.length) return 0
+  const pick = matrix.find((row) => row.contract === '신규' && row.years === '5년')
+  return pick ? (pick.monthly_fee || 0) : (matrix[0]?.monthly_fee || 0)
+}
 function classifyArea(d = '') {
   const m = d.match(/(\d+)\s*평/)
   if (m) {
@@ -619,8 +624,8 @@ export default function Catalog() {
     })
     const sorted = [...filtered]
     if (sort === 'commission_desc') sorted.sort((a, b) => (b.max_commission || 0) - (a.max_commission || 0))
-    else if (sort === 'price_desc') sorted.sort((a, b) => (b.min_monthly_fee || 0) - (a.min_monthly_fee || 0))
-    else if (sort === 'price_asc') sorted.sort((a, b) => (a.min_monthly_fee || 0) - (b.min_monthly_fee || 0))
+    else if (sort === 'price_desc') sorted.sort((a, b) => (representativeFee(b.pricing_matrix) || b.min_monthly_fee || 0) - (representativeFee(a.pricing_matrix) || a.min_monthly_fee || 0))
+    else if (sort === 'price_asc') sorted.sort((a, b) => (representativeFee(a.pricing_matrix) || a.min_monthly_fee || 0) - (representativeFee(b.pricing_matrix) || b.min_monthly_fee || 0))
     else if (sort === 'latest') sorted.reverse()
     return sorted
   }, [all, q, cat, brand, brandFilter, funcFilter, typeFilter, methodFilter, priceFilter, areaFilter, airFuncFilter, mattressTypeFilter, sort])
@@ -757,7 +762,7 @@ export default function Catalog() {
                   <div className="pcard-model">{p.model_code || ' '}</div>
                   <div className="pcard-fee is-fee">
                     <span className="tag">월</span>
-                    <span className="val">{won(p.min_monthly_fee)}</span>
+                    <span className="val">{won(representativeFee(p.pricing_matrix) || p.min_monthly_fee)}</span>
                     <span className="won">원~</span>
                   </div>
                 </div>
